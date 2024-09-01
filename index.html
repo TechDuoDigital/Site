@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Online</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #000;
+            color: #fff;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .header-logo {
+	    color: #8c52ff;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .header-nav {
+            margin-bottom: 15px;
+        }
+
+        .header-nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .header-nav a:hover {
+            color: #e0e0e0;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+
+        .search-container input:focus {
+            outline: none;
+            border-color: #8c52ff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            box-sizing: border-box;
+            flex: 1;
+        }
+
+        .product {
+            width: calc(33.33% - 20px);
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            opacity: 0;
+            animation: fadeIn 0.6s forwards;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-bottom: 3px solid #8c52ff;
+        }
+
+        .product h2 {
+            font-size: 16px;
+            margin: 10px 0;
+            padding: 0 15px;
+            color: #000;
+        }
+
+        .product .price {
+            font-size: 14px;
+            color: #000;
+            margin: 10px 0;
+            padding: 0 15px;
+        }
+
+        .product .old-price {
+            text-decoration: line-through;
+            color: #888;
+            margin-right: 5px;
+        }
+
+        .product .discount {
+            color: #8c52ff;
+            font-weight: bold;
+        }
+
+        .product .link-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 15px 0;
+            background-color: #8c52ff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .product .link-button:hover {
+            background-color: #6a3bb3;
+            transform: scale(1.05);
+        }
+
+        .no-products {
+            display: none;
+            width: 100%;
+            height: calc(100vh - 80px); /* Ajusta a altura para centralizar verticalmente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        .no-products img {
+            width: 50px;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        footer {
+            background: #000;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative; /* Use relative position para evitar sobreposição */
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-content {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            margin: 10px 0;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1200px) {
+            .product {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product {
+                width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product {
+                width: calc(100% - 20px);
+            }
+        }
+    .logo {
+        height: 50px; /* Ajuste a altura do logo conforme necessário */
+        margin-right: 15px;
+	  }
+}
+    </style>
+</head>
+<body>
+    <header>
+    <img src="https://i.postimg.cc/t4snPPJk/Logo-Tech-Duo-removebg-preview.png" alt="Logo da Empresa" class="logo">
+        <div class="header-logo">Tech Duo</div>
+        <nav class="header-nav">
+            <a href="#">Início</a>
+            <a href="https://w.app/6CDimc">Contato</a>
+        </nav>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Buscar produtos...">
+        </div>
+    </header>
+
+    <div class="container" id="productContainer">
+       <div class="container">
+        <!-- Product 1 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rbml-lmjokpw2kmrv07" alt="Kit 4 Em 1 Ralador Fatiador Bacia Inox Tigela Saladeira">
+            <h2>Kit 4 Em 1 Ralador Fatiador Bacia Inox Tigela Saladeira</h2>
+            <p class="price">R$35,99</p>
+            <a href="https://s.shopee.com.br/4fd3Jt6644" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rccj-lslvav5dcwq77b" alt="Kit Cozinha Completa Escorredor De Louça + Lixeira de Pia 5 litros + Porta Detergente + Rodinho de Pia">
+            <h2>Kit Cozinha Completa Escorredor De Louça + Lixeira de Pia 5 litros + Porta Detergente + Rodinho de Pia</h2>
+            <p class="price"><span class="old-price">R$29,00</span> <span class="discount">R$28,70</span></p>
+            <a href="https://s.shopee.com.br/4pwTWAS8Dj" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lyu9hjkb87qd89" alt="Pacote com 15 recipientes herméticos para armazenamento de alimentos">
+            <h2>Pacote com 15 recipientes herméticos para armazenamento de alimentos</h2>
+            <p class="price"><span class="old-price">R$300,00</span> <span class="discount">R$89,00 - R$129,00</span></p>
+            <a href="https://s.shopee.com.br/7pa55dnCYI" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lpap4psnuz76ed" alt="Suporte Dispenser Porta Detergente Cozinha De Plástico Cozinha Pia">
+            <h2>Suporte Dispenser Porta Detergente Cozinha De Plástico Cozinha Pia</h2>
+            <p class="price">R$20,99</p>
+            <a href="https://s.shopee.com.br/2qBP8NuJEK" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lmt0297656uu69" alt="Kit 5 Camisetas Dry Fit Masculina - Casual - Treino - Academia - Esportes - Exercícios - Corrida">
+            <h2>Kit 5 Camisetas Dry Fit Masculina - Casual - Treino - Academia - Esportes - Exercícios - Corrida</h2>
+            <p class="price"><span class="old-price">R$89,90</span> <span class="discount">R$74,90</span></p>
+            <a href="https://s.shopee.com.br/20cI6JUqoK" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-ls39hzk3b2fhe8" alt="Camisa Social Slim Fit Manga longa Branca Preta Super Oferta Envio Imediato Nova coleção">
+            <h2>Camisa Social Slim Fit Manga longa Branca Preta Super Oferta Envio Imediato Nova coleção</h2>
+            <p class="price"><span class="old-price">R$58,00 - R$59,99</span> <span class="discount">R$56,99 - R$58,19</span></p>
+            <a href="https://s.shopee.com.br/A9xzpFjQyn" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 7 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rd3m-lvopv1hll7lp35" alt="Camiseta Lombra Listrada Versátil Oversized Algodão Premium">
+            <h2>Camiseta Lombra Listrada Versátil Oversized Algodão Premium</h2>
+            <p class="price"><span class="old-price">R$119,90</span> <span class="discount">R$113,91</span></p>
+            <a href="https://s.shopee.com.br/6V4hSUBkAP" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 8 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lsmt6mbws27v34" alt="Kit Calça e Camisa Peluciada Térmica Segunda Pele Ideal Para Inverno Tecido Térmico Camiseta e Calça Peluciada">
+            <h2>Kit Calça e Camisa Peluciada Térmica Segunda Pele Ideal Para Inverno Tecido Térmico Camiseta e Calça Peluciada</h2>
+            <p class="price"><span class="old-price">R$199,90</span> <span class="discount">R$78,90</span></p>
+            <a href="https://s.shopee.com.br/2frytMjbzG" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 9 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lx9uyiedzh6nef" alt="Kit 2 Calças SARJA Slim Social FIT Sport Fino">
+            <h2>Kit 2 Calças SARJA Slim Social FIT Sport Fino</h2>
+            <p class="price"><span class="old-price">R$179,00</span> <span class="discount">R$149,90</span></p>
+            <a href="https://s.shopee.com.br/6phXqydcht" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 10 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rd71-lwq4wn2t73hue5" alt="Kit 3 Camiseta Masculina Slim Canelada Gola Alta Manga Curta">
+            <h2>Kit 3 Camiseta Masculina Slim Canelada Gola Alta Manga Curta</h2>
+            <p class="price"><span class="old-price">R$189,99</span> <span class="discount">R$149,99</span></p>
+            <a href="https://s.shopee.com.br/8KWLdYypu8" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 11 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lxcnfnqcvsdyf4" alt="Kit Sapato Social Masculino Elegante de luxo Confortavel + Carteira Sofisticada + Cinto de Couro">
+            <h2>Kit Sapato Social Masculino Elegante de luxo Confortavel + Carteira Sofisticada + Cinto de Couro</h2>
+            <p class="price"><span class="old-price">R$65,99</span> <span class="discount">R$54,78</span></p>
+            <a href="https://s.shopee.com.br/1B3B6K9eev" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 12 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/sg-11134201-22090-s7xajnr1lzhv0e" alt="Kit Ice Cravejado Cordão + Brinco E Pulseira Premium Magnata">
+            <h2>Kit Ice Cravejado Cordão + Brinco E Pulseira Premium Magnata</h2>
+            <p class="price"><span class="old-price">R$100,00</span> <span class="discount">R$49,90</span></p>
+            <a href="https://s.shopee.com.br/3fkW4sagVO" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 13 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lz0qvbgvp1r904" alt="Bota Caterpillar Masculina Onda7 Kit Completo Envio Rápido">
+            <h2>Bota Caterpillar Masculina Onda7 Kit Completo Envio Rápido</h2>
+            <p class="price"><span class="old-price">R$89,99</span> <span class="discount">R$83,69</span></p>
+            <a href="https://s.shopee.com.br/6V4hS3iIyo" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 14 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/sg-11134201-23030-7n1i6y2n3fov7f" alt="Kit 05 Camisetas Proteção Solar UV Malha Fria Segunda Pele Camisa Térmica Unissex Academia">
+            <h2>Kit 05 Camisetas Proteção Solar UV Malha Fria Segunda Pele Camisa Térmica Unissex Academia</h2>
+            <p class="price"><span class="old-price">R$189,90</span> <span class="discount">R$105,90</span></p>
+            <a href="https://s.shopee.com.br/9f1jDoL9Df" class="link-button">Comprar</a>
+        </div>
+
+   <!-- Product 15 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/5f52965841014e5c17114a8bcb88f03e" alt="Adesivo Personalizado com seu @ Holográfico">
+            <h2>Adesivo Personalizado com seu @ Holográfico</h2>
+            <p class="price">R$10,50</p>
+            <a href="https://s.shopee.com.br/3AoF9BVO6g" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 16 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-ltsh8bfoudk976" alt="Cartela Adesivo Holográfico Pernalonga 244 Osascorte Ningúem Tá Puro - 13 Adesivos">
+            <h2>Cartela Adesivo Holográfico Pernalonga 244 Osascorte Ningúem Tá Puro - 13 Adesivos</h2>
+            <p class="price"><span class="old-price">R$39,90</span> <span class="discount">R$19,00</span></p>
+            <a href="https://s.shopee.com.br/2AvhxHRWuW" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 17 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7qukw-lh52iekd6ivfbc" alt="Mini Projetor Portátil Curta Distancia Led 1080p 600 Lúmens Hdmi YG300 Envio Imediato">
+            <h2>Mini Projetor Portátil Curta Distancia Led 1080p 600 Lúmens Hdmi YG300 Envio Imediato</h2>
+            <p class="price"><span class="old-price">R$194,35 - R$238,94</span> <span class="discount">R$117,50 - R$167,30</span></p>
+            <a href="https://s.shopee.com.br/40NLNlxhMT" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 18 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7qukw-li1u0y8qr9ct0b" alt="Campainha Com Câmera Vídeo Porteiro Sem Fio Wi-Fi HD Inteligente Smart Home Vê Pelo Celular Recarregável">
+            <h2>Campainha Com Câmera Vídeo Porteiro Sem Fio Wi-Fi HD Inteligente Smart Home Vê Pelo Celular Recarregável</h2>
+            <p class="price"><span class="old-price">R$99,99</span> <span class="discount">R$49,99</span></p>
+            <a href="https://s.shopee.com.br/7fGdkUFgnK" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 19 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rd6j-luqrrvx8ih2o2b" alt="Kit Jogo De Ferramentas 200 Pcs C/Soquetes Chaves 0 5456 Titanium">
+            <h2>Kit Jogo De Ferramentas 200 Pcs C/Soquetes Chaves 0 5456 Titanium</h2>
+            <p class="price"><span class="old-price">R$99,90</span> <span class="discount">R$89,90</span></p>
+            <a href="https://s.shopee.com.br/5VC9ATbbK2" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 20 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7qukw-ljlhtnq2g0p6d2" alt="Fone De Ouvido Headset Gamer Rgb LED Compatível Com Pc Computador Vídeogame Xbox PS4 PS5">
+            <h2>Fone De Ouvido Headset Gamer Rgb LED Compatível Com Pc Computador Vídeogame Xbox PS4 PS5</h2>
+            <p class="price"><span class="old-price">R$99,90</span> <span class="discount">R$69,90</span></p>
+            <a href="https://s.shopee.com.br/BAcoZl83k" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 21 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lomqjeb9ouk2cc" alt="Fone De Ouvido Sem Fio P9 TWS Macaron Bluetooth Envio Imediato">
+            <h2>Fone De Ouvido Sem Fio P9 TWS Macaron Bluetooth Envio Imediato</h2>
+            <p class="price"><span class="old-price">R$66,69</span> <span class="discount">R$33,80</span></p>
+            <a href="https://s.shopee.com.br/608Qv0kXIr" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 22 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/d728362307e14e925cf994f12bdfcb78" alt="Fones De Ouvido Bluetooth Colorido i12 Tws Sem Fio Com Controle De Toque">
+            <h2>Fones De Ouvido Bluetooth Colorido i12 Tws Sem Fio Com Controle De Toque</h2>
+            <p class="price"><span class="old-price">R$37,50 - R$80,45</span> <span class="discount">R$20,00 - R$23,80</span></p>
+            <a href="https://s.shopee.com.br/6ARpxZTq4M" class="link-button">Comprar</a>
+        </div>
+
+        <!-- Product 23 -->
+        <div class="product">
+            <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lvm98b66j9zyb5" alt="Projetor 4K HD 150 Polegadas Celular, Tv B0x, Xbox, PS, Pc, Wifi HY300 Pro Magcubic Envio Imediato">
+            <h2>Projetor 4K HD 150 Polegadas Celular, Tv B0x, Xbox, PS, Pc, Wifi HY300 Pro Magcubic Envio Imediato</h2>
+            <p class="price"><span class="old-price">R$500,00</span> <span class="discount">R$315,99</span></p>
+            <a href="https://s.shopee.com.br/VnTD8P4bd" class="link-button">Comprar</a>
+        </div>
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lqg8leqyw45fc9" alt="Caixa de Som G-Speaker Luminária Bluetooth Inteligente Carregador Sem Fio Led Luz Rgb Caxinha">
+    <h2>Caixa de Som G-Speaker Luminária Bluetooth Inteligente Carregador Sem Fio Led Luz Rgb Caxinha</h2>
+    <p class="price"><span class="old-price">R$299,99</span> <span class="discount">R$55,99 - R$59,99</span></p>
+    <a href="https://s.shopee.com.br/BAgqgLmHi" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rccm-lr7ety13o0rw47" alt="Aspirador De Pó Usb Portátil Completo Linha Premium Carro E Casa 2000mAh">
+    <h2>Aspirador De Pó Usb Portátil Completo Linha Premium Carro E Casa 2000mAh</h2>
+    <p class="price"><span class="old-price">R$49,99</span> <span class="discount">R$29,97</span></p>
+    <a href="https://s.shopee.com.br/50Fwba36xY" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lvyn60lx4nlif5" alt="ESPELHO GRANDE RETANGULAR CORPO INTEIRO 1 METRO P/ SALA QUARTO BANHEIRO - SUPORTE E DUPLA FACE">
+    <h2>ESPELHO GRANDE RETANGULAR CORPO INTEIRO 1 METRO P/ SALA QUARTO BANHEIRO - SUPORTE E DUPLA FACE</h2>
+    <p class="price"><span class="old-price">R$340,90</span> <span class="discount">R$105,90 - R$242,90</span></p>
+    <a href="https://s.shopee.com.br/6KlKC3FZeN" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rd62-lvjn8382u4729e" alt="Video game Stick 4K Com 20000 Jogos 64gb 2 Controles Sem Fio Console Portatil Jogos Retro Video Game">
+    <h2>Video game Stick 4K Com 20000 Jogos 64gb 2 Controles Sem Fio Console Portatil Jogos Retro Video Game</h2>
+    <p class="price"><span class="old-price">R$190,00</span> <span class="discount">R$99,50</span></p>
+    <a href="https://s.shopee.com.br/40NPPmk3Ff" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98p-llqt72gm73li4e" alt="Astronauta Galaxy Star Projetor de Estrelado Luz Da Noite Home Decor Quarto Luminárias Natal Presente">
+    <h2>Astronauta Galaxy Star Projetor de Estrelado Luz Da Noite Home Decor Quarto Luminárias Natal Presente</h2>
+    <p class="price"><span class="discount">R$149,99</span></p>
+    <a href="https://s.shopee.com.br/5Ksn0Hr6Hh" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/1d37421cb1d6482f220f4497efd10de9" alt="Console De Mão De 4,3 Polegadas Com 10000 Jogos 8GB/PSP/Jogador/PSV/PSVita">
+    <h2>Console De Mão De 4,3 Polegadas Com 10000 Jogos 8GB/PSP/Jogador/PSV/PSVita</h2>
+    <p class="price"><span class="old-price">R$278,00</span> <span class="discount">R$112,99</span></p>
+    <a href="https://s.shopee.com.br/5fVdP0hzA9" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lpjhcqmkuiwfdd" alt="Aspirador De Pó E Liquido Automotivo Portátil Turbo Potente 90w 12v">
+    <h2>Aspirador De Pó E Liquido Automotivo Portátil Turbo Potente 90w 12v</h2>
+    <p class="price"><span class="old-price">R$169,90</span> <span class="discount">R$118,90</span></p>
+    <a href="https://s.shopee.com.br/1Vg4RNB7kG" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/048bce01d753a0a59907ec1ba52bc55e" alt="Fone De Ouvido Sem Fio Jbl T500BT /T510BT Bluetooth Rádio FM mp3 Cartão De Memória H M_SHop">
+    <h2>Fone De Ouvido Sem Fio Jbl T500BT /T510BT Bluetooth Rádio FM mp3 Cartão De Memória H M_SHop</h2>
+    <p class="price"><span class="old-price">R$99,00 - R$211,09</span> <span class="discount">R$60,99</span></p>
+    <a href="https://s.shopee.com.br/1qIuq4uESB" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rbka-lpzwo7xvfcw7db" alt="M-5XL Hoodies Jaquetas Homens Mulheres Moletons Uso Externo Tamanho Grande Largo Com Capuz">
+    <h2>M-5XL Hoodies Jaquetas Homens Mulheres Moletons Uso Externo Tamanho Grande Largo Com Capuz</h2>
+    <p class="price"><span class="old-price">R$138,00</span> <span class="discount">R$78,66</span></p>
+    <a href="https://s.shopee.com.br/7ztYBVujMx" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lklg77alwlgc59" alt="Bermuda Masculina Spray Grafite Skate sk8 em Tac tel Elastano">
+    <h2>Bermuda Masculina Spray Grafite Skate sk8 em Tac tel Elastano</h2>
+    <p class="price"><span class="discount">R$42,99</span></p>
+    <a href="https://s.shopee.com.br/7UxHac5AQR" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/7a9b285f30d7e46e5478516a5e110693" alt="Camiseta Basica Camisa Cactus Jack Rapper Americano Cosplay Fan Unissex">
+    <h2>Camiseta Basica Camisa Cactus Jack Rapper Americano Cosplay Fan Unissex</h2>
+    <p class="price"><span class="old-price">R$49,99 - R$59,99</span> <span class="discount">R$47,50 - R$57,00</span></p>
+    <a href="https://s.shopee.com.br/1kkvN8P0dG" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/b90bb7f6d05fef51b6bb895999da2c6a" alt="Womens Coats and Jackets High Street Hip Hop Baseball Uniforms Street Casual Coat Loose Stitching Jacket">
+    <h2>Womens Coats and Jackets High Street Hip Hop Baseball Uniforms Street Casual Coat Loose Stitching Jacket</h2>
+    <p class="price"><span class="discount">R$123,33 - R$125,30</span></p>
+    <a href="https://s.shopee.com.br/7bB8yV8hYg" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/sg-11134201-22090-gt4192uev2hv82" alt="Moletom Canguru Algodão Unissex Percy Jackson Harajuku Moda Anime">
+    <h2>Moletom Canguru Algodão Unissex Percy Jackson Harajuku Moda Anime</h2>
+    <p class="price"><span class="old-price">R$89,99</span> <span class="discount">R$69,90</span></p>
+    <a href="https://s.shopee.com.br/6nUv0tpA2b" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lwj3cd5bqtg266" alt="Cafeteira Elétrica Cad">
+    <h2>Cafeteira Elétrica Cad</h2>
+    <p class="price"><span class="old-price">R$180,00</span> <span class="discount">R$130,00</span></p>
+    <a href="https://s.shopee.com.br/2vD5ghKkpJ" class="link-button">Comprar</a>
+</div>
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rbkn-lnqkw0tmriy020" alt="Regata Masculina Modelo Americano Ribana Canelada Justa Hip Hop">
+    <h2>Regata Masculina Modelo Americano Ribana Canelada Justa Hip Hop</h2>
+    <p class="price"><span class="discount">R$49,90</span></p>
+    <a href="https://s.shopee.com.br/9zecZIxULM" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/826597800f4f04899cbd9fecd683fa7b" alt="Som Para Carro Automotivo Com Bluetooth Mp3 Usb 2 Ano Garantia">
+    <h2>Som Para Carro Automotivo Com Bluetooth Mp3 Usb 2 Ano Garantia</h2>
+    <p class="price"><span class="old-price">R$79,90</span> <span class="discount">R$58,90</span></p>
+    <a href="https://s.shopee.com.br/9pLCNN6QmV" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-lnx9gzcv7y5l8e" alt="Dvd Automotivo 2 Din Central Multimidia Mp5 Bluetooth Usb Sd Tela 7 Hd Espelhamento">
+    <h2>Dvd Automotivo 2 Din Central Multimidia Mp5 Bluetooth Usb Sd Tela 7 Hd Espelhamento</h2>
+    <p class="price"><span class="old-price">R$329,90</span> <span class="discount">R$189,50</span></p>
+    <a href="https://s.shopee.com.br/rGfNkNq1" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/bcb2d871e9c027b3c2cb1c3a23ba2596" alt="Console Encosto Apoio De Braço Carro Universal Com Entrada Usb">
+    <h2>Console Encosto Apoio De Braço Carro Universal Com Entrada Usb</h2>
+    <p class="price"><span class="old-price">R$129,50</span> <span class="discount">R$119,50</span></p>
+    <a href="https://s.shopee.com.br/8pSfBeyLPU" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/br-11134207-7r98o-loa9p8bmd74729" alt="Jogo 4 Pneu 225/45R17 Remold Pneu Aro 17 Linha Premium com Garantia e selo do INMETRO">
+    <h2>Jogo 4 Pneu 225/45R17 Remold Pneu Aro 17 Linha Premium com Garantia e selo do INMETRO</h2>
+    <p class="price"><span class="old-price">R$859,98</span> <span class="discount">R$730,99</span></p>
+    <a href="https://s.shopee.com.br/A9y2mDGlIu" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/sg-11134201-7rd57-lxa11dzd4p0f2e" alt="Par Farol Fiat Uno Fire Fiorino 2004-2013 Máscara Negra - Lado Direito (Passageiro) e Lado Esquerdo (Motorista)">
+    <h2>Par Farol Fiat Uno Fire Fiorino 2004-2013 Máscara Negra - Lado Direito (Passageiro) e Lado Esquerdo (Motorista)</h2>
+    <p class="price"><span class="old-price">R$369,80</span> <span class="discount">R$184,90</span></p>
+    <a href="https://s.shopee.com.br/1Vg4SJa5kw" class="link-button">Comprar</a>
+</div>
+
+<div class="product">
+    <img src="https://down-br.img.susercontent.com/file/d2f7a96c6baa8b26a1a04186548de5c6" alt="Fonte Carregador Jfa Storm 70a Bivolt - 12v Flutuação CCA">
+    <h2>Fonte Carregador Jfa Storm 70a Bivolt - 12v Flutuação CCA</h2>
+    <p class="price"><span class="discount">R$502,90</span></p>
+    <a href="https://s.shopee.com.br/VnXGXyQ2i" class="link-button">Comprar</a>
+</div>
+
+    </div>
+
+<div id="no-products-message" style="display: none;">
+    Não há produtos
+</div>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Tech Duo</p>
+            <div class="footer-links">
+                <a>Política de Privacidade</a>
+                <a>Termos de Serviço</a>
+                <a href="https://w.app/6CDimc">Contato</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            var searchQuery = this.value.toLowerCase();
+            var products = document.getElementsByClassName('product');
+            var noProductsMessage = document.getElementById('noProducts');
+            var hasVisibleProducts = false;
+
+            for (var i = 0; i < products.length; i++) {
+                var productName = products[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
+                if (productName.includes(searchQuery)) {
+                    products[i].style.display = '';
+                    hasVisibleProducts = true;
+                } else {
+                    products[i].style.display = 'none';
+                }
+            }
+
+            if (hasVisibleProducts) {
+                noProductsMessage.style.display = 'none';
+            } else {
+                noProductsMessage.style.display = 'flex';
+            }
+        });
+    </script>
+</body>
+</html>
